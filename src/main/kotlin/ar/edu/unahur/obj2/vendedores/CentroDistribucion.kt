@@ -9,8 +9,8 @@ abstract class CentroDistribucion {
             throw Exception("el vendedor ya esta en el centro")
         }
         else {
-            agregarVendedor(vendedor)
-            agregarSiEsGenerico(vendedor)
+            this.agregarVendedor(vendedor)
+            this.agregarSiEsGenerico(vendedor)
         }
     }
     fun agregarVendedor(vendedor: Vendedor) { vendedores.add(vendedor) }

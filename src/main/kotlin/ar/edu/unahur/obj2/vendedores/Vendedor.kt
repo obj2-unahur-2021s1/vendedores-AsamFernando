@@ -64,6 +64,6 @@ class ComercioCorresponsal(val ciudades: List<Ciudad>) : Vendedor() {
   fun cantidadProvinciasConSucursales() = provincias().toSet().size
 
   override fun esInfluyente(): Boolean {
-    return cantidadCiudadesConSucursales() >= 5 || cantidadProvinciasConSucursales() >= 3
+    return this.cantidadCiudadesConSucursales() >= 5 || this.cantidadProvinciasConSucursales() >= 3
   }
 }
