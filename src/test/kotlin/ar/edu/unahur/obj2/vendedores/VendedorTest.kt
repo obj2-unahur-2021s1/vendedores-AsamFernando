@@ -16,6 +16,7 @@ class VendedorTest : DescribeSpec({
   val obera = Ciudad(misiones)
   val esperanza = Ciudad(santaFe)
   val sunchales = Ciudad(santaFe)
+
   val certificacionDeProductoFull = Certificacion(true, 100)
   val certificacionDeProductoPro = Certificacion(true, 75)
   val certificacionDeProductoBaja = Certificacion(true, 15)
@@ -35,7 +36,7 @@ class VendedorTest : DescribeSpec({
       }
     }
     describe("esInfluyente") {
-      it("debe ser falso") {
+      it("el vendedor fijo no es influyente") {
         vendedorFijo.esInfluyente().shouldBeFalse()
       }
     }
@@ -70,13 +71,13 @@ class VendedorTest : DescribeSpec({
     }
 
     describe("esFirme") {
-      it("Puntaje de certificaciones menor a 30") {
+      it("puntaje de certificaciones menor a 30") {
         vendedorFijo.certificaciones.clear()
         vendedorFijo.agregarCertificacion(certificacionBaja)
         vendedorFijo.agregarCertificacion(certificacionDeProductoBaja)
         vendedorFijo.esFirme().shouldBeFalse()
       }
-      it("Puntaje de certificaciones mayor o igual a 30") {
+      it("puntaje de certificaciones mayor o igual a 30") {
         vendedorFijo.certificaciones.clear()
         vendedorFijo.agregarCertificacion(certificacionBaja)
         vendedorFijo.agregarCertificacion(certificacionDeProductoBaja)
@@ -85,7 +86,7 @@ class VendedorTest : DescribeSpec({
       }
     }
     describe("esGenerico") {
-      it("Tiene solo certificaciones de producto") {
+      it("tiene solo certificaciones de producto") {
         vendedorFijo.certificaciones.clear()
         vendedorFijo.agregarCertificacion(certificacionDeProductoPro)
         vendedorFijo.agregarCertificacion(certificacionDeProductoFull)
@@ -113,10 +114,10 @@ class VendedorTest : DescribeSpec({
       }
     }
     describe("esInfluyente") {
-      it("Suma poblacion de provincias habilitadas menor a 10000000") {
+      it("suma poblacion de provincias habilitadas menor a 10000000") {
         viajante.esInfluyente().shouldBeFalse()
       }
-      it("Suma poblacion de provincias habilitadas mayor a 10000000") {
+      it("suma poblacion de provincias habilitadas mayor a 10000000") {
         viajanteInfluyente.esInfluyente().shouldBeTrue()
       }
     }

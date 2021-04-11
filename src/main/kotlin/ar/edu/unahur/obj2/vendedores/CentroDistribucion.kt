@@ -21,3 +21,5 @@ abstract class CentroDistribucion {
     fun puedeCubrirCiudad(ciudad: Ciudad) = vendedores.any { it.puedeTrabajarEn(ciudad) }
     fun esRobusto() = vendedores.count { it.esFirme() } >= 3
 }
+
+class CentroDistribucionInterior : CentroDistribucion()
