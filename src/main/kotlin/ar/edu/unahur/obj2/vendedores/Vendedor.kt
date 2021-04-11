@@ -2,7 +2,7 @@ package ar.edu.unahur.obj2.vendedores
 
 class Certificacion(val esDeProducto: Boolean, val puntaje: Int)
 
-/*Agregado metodo esInfluyente a los vendedores*/
+/*Agregado metodo esInfluyente y es generico a los vendedores*/
 
 abstract class Vendedor {
   // Acá es obligatorio poner el tipo de la lista, porque como está vacía no lo puede inferir.
@@ -31,7 +31,7 @@ abstract class Vendedor {
   fun otrasCertificaciones() = certificaciones.count { !it.esDeProducto }
 
   fun puntajeCertificaciones() = certificaciones.sumBy { c -> c.puntaje }
-  fun esGenerico() = certificaciones.any{ c -> !c.esDeProducto}
+  fun esGenerico() = certificaciones.any{ !it.esDeProducto }
 }
 
 // En los parámetros, es obligatorio poner el tipo

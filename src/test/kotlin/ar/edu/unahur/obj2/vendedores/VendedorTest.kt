@@ -7,6 +7,13 @@ import io.kotest.matchers.booleans.shouldBeTrue
 class VendedorTest : DescribeSpec({
   val misiones = Provincia(1300000)
   val sanIgnacio = Ciudad(misiones)
+  val certificacionDeProductoFull = Certificacion(true, 100)
+  val certificacionDeProductoPro = Certificacion(true, 75)
+  val certificacionDeProductoStandard = Certificacion(true, 50)
+  val certificacionDeProductoBaja = Certificacion(true, 15)
+  val certificacionBuena = Certificacion(false, 40)
+  val certificacionMedia = Certificacion(false, 25)
+  val certificacionBaja = Certificacion(false, 10)
 
   describe("Vendedor fijo") {
     val obera = Ciudad(misiones)
@@ -20,6 +27,70 @@ class VendedorTest : DescribeSpec({
         vendedorFijo.puedeTrabajarEn(sanIgnacio).shouldBeFalse()
       }
     }
+    describe("esInfluyente") {
+      it("debe ser falso") {
+        vendedorFijo.esInfluyente().shouldBeFalse()
+      }
+    }
+    describe("esVersatil") {
+      it("menos de 3 certificaciones de un solo tipo") {
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.esVersatil().shouldBeFalse()
+      }
+      it("menos de 3 certificaciones de ambos tipos") {
+        vendedorFijo.certificaciones.clear()
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.agregarCertificacion(certificacionDeProductoBaja)
+        vendedorFijo.esVersatil().shouldBeFalse()
+      }
+      it("3 o mas certificaciones de un solo tipo") {
+        vendedorFijo.certificaciones.clear()
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.agregarCertificacion(certificacionMedia)
+        vendedorFijo.agregarCertificacion(certificacionBuena)
+        vendedorFijo.esVersatil().shouldBeFalse()
+      }
+      it("3 o mas certificaciones de ambos tipos") {
+        vendedorFijo.certificaciones.clear()
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.agregarCertificacion(certificacionMedia)
+        vendedorFijo.agregarCertificacion(certificacionDeProductoFull)
+        vendedorFijo.agregarCertificacion(certificacionDeProductoPro)
+        vendedorFijo.esVersatil().shouldBeTrue()
+      }
+    }
+
+    describe("esFirme") {
+      it("Puntaje de certificaciones menor a 30") {
+        vendedorFijo.certificaciones.clear()
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.agregarCertificacion(certificacionDeProductoBaja)
+        vendedorFijo.esFirme().shouldBeFalse()
+      }
+      it("Puntaje de certificaciones mayor o igual a 30") {
+        vendedorFijo.certificaciones.clear()
+        vendedorFijo.agregarCertificacion(certificacionBaja)
+        vendedorFijo.agregarCertificacion(certificacionDeProductoBaja)
+        vendedorFijo.agregarCertificacion(certificacionBuena)
+        vendedorFijo.esFirme().shouldBeTrue()
+      }
+    }
+    describe("esGenerico") {
+      it("Puntaje de certificaciones menor a 30") {
+        vendedorFijo.certificaciones.clear()
+        vendedorFijo.agregarCertificacion(certificacionDeProductoPro)
+        vendedorFijo.agregarCertificacion(certificacionDeProductoFull)
+        vendedorFijo.esGenerico().shouldBeFalse()
+      }
+      it("Puntaje de certificaciones menor a 30") {
+        vendedorFijo.certificaciones.clear()
+        vendedorFijo.agregarCertificacion(certificacionBuena)
+        vendedorFijo.agregarCertificacion(certificacionDeProductoFull)
+        vendedorFijo.esGenerico().shouldBeTrue()
+      }
+    }
   }
 
   describe("Viajante") {
@@ -28,6 +99,14 @@ class VendedorTest : DescribeSpec({
     val viajante = Viajante(listOf(misiones))
 
     describe("puedeTrabajarEn") {
+      it("una ciudad que pertenece a una provincia habilitada") {
+        viajante.puedeTrabajarEn(sanIgnacio).shouldBeTrue()
+      }
+      it("una ciudad que no pertenece a una provincia habilitada") {
+        viajante.puedeTrabajarEn(villaDolores).shouldBeFalse()
+      }
+    }
+    describe("esInfluyente") {
       it("una ciudad que pertenece a una provincia habilitada") {
         viajante.puedeTrabajarEn(sanIgnacio).shouldBeTrue()
       }
