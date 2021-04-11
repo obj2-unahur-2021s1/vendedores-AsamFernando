@@ -78,13 +78,13 @@ class VendedorTest : DescribeSpec({
       }
     }
     describe("esGenerico") {
-      it("Puntaje de certificaciones menor a 30") {
+      it("Tiene solo certificaciones de producto") {
         vendedorFijo.certificaciones.clear()
         vendedorFijo.agregarCertificacion(certificacionDeProductoPro)
         vendedorFijo.agregarCertificacion(certificacionDeProductoFull)
         vendedorFijo.esGenerico().shouldBeFalse()
       }
-      it("Puntaje de certificaciones menor a 30") {
+      it("al menos una certificacion que no es de producto") {
         vendedorFijo.certificaciones.clear()
         vendedorFijo.agregarCertificacion(certificacionBuena)
         vendedorFijo.agregarCertificacion(certificacionDeProductoFull)
@@ -95,8 +95,11 @@ class VendedorTest : DescribeSpec({
 
   describe("Viajante") {
     val cordoba = Provincia(2000000)
+    val santaFe = Provincia(10000000)
+    val rosario = Ciudad(santaFe)
     val villaDolores = Ciudad(cordoba)
     val viajante = Viajante(listOf(misiones))
+    val viajanteInfluyente = Viajante(listOf(misiones, santaFe))
 
     describe("puedeTrabajarEn") {
       it("una ciudad que pertenece a una provincia habilitada") {
@@ -107,11 +110,11 @@ class VendedorTest : DescribeSpec({
       }
     }
     describe("esInfluyente") {
-      it("una ciudad que pertenece a una provincia habilitada") {
-        viajante.puedeTrabajarEn(sanIgnacio).shouldBeTrue()
+      it("Suma poblacion de provincias habilitadas menor a 10000000") {
+        viajante.esInfluyente().shouldBeFalse()
       }
-      it("una ciudad que no pertenece a una provincia habilitada") {
-        viajante.puedeTrabajarEn(villaDolores).shouldBeFalse()
+      it("Suma poblacion de provincias habilitadas mayor a 10000000") {
+        viajanteInfluyente.esInfluyente().shouldBeTrue()
       }
     }
   }
